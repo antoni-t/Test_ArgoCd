@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "web-scraper.fullname" . }}
+  labels:
+    app: {{ include "web-scraper.name" . }}
+    chart: {{ include "web-scraper.chart" . }}
+    release: {{ .Chart.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "web-scraper.name" . }}
+      release: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "web-scraper.name" . }}
+        release: {{ .Chart.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: API_BASE_URL
+              value: {{ .Values.env.API_BASE_URL }}
+            - name: DB_HOST
+              value: "{{ .Chart.Name }}-mariadb"
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_USER
+              value: {{ .Values.env.DB_USER }}
+            - name: DB_PASSWORD
+              value: {{ .Values.mariadb.auth.rootPassword }}
+            - name: DB_NAME
+              value: {{ .Values.mariadb.auth.database }}
+            - name: SCRAPING_INTERVAL_MINUTES
+              value: {{ .Values.env.SCRAPING_INTERVAL_MINUTES | quote }}
+      initContainers:
+        - name: wait-for-mariadb
+          image: busybox:1.36
+          command: ['sh', '-c', 'until nc -z {{ .Chart.Name }}-mariadb 3306; do echo waiting for mariadb; sleep 2; done']

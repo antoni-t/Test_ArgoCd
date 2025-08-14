@@ -1,0 +1,19 @@
+replicaCount: 1
+
+image:
+  repository: web-scraper  
+  tag: latest
+  pullPolicy: Never
+
+env:
+  API_BASE_URL: https://smard.de/app
+  DB_USER: root
+  SCRAPING_INTERVAL_MINUTES: 15
+
+mariadb:
+  auth:
+    rootPassword: password
+    database: powerdata
+  primary:
+    persistence:
+      enabled: false

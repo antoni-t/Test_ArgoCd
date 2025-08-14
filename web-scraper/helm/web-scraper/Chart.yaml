@@ -1,0 +1,10 @@
+apiVersion: v2
+name: web-scraper
+description: Scraping german power generation and consumption data
+version: 0.1.0
+appVersion: "1.0"
+
+dependencies:
+  - name: mariadb
+    version: 21.0.3
+    repository: https://charts.bitnami.com/bitnami

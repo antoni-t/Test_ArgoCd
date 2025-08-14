@@ -1,0 +1,11 @@
+{{- define "web-scraper.name" -}}
+{{- .Chart.Name | trunc 63 | trimSuffix "-" -}}
+{{- end }}
+
+{{- define "web-scraper.fullname" -}}
+{{- printf "%s" (include "web-scraper.name" .) | trunc 63 | trimSuffix "-" -}}
+{{- end }}
+
+{{- define "web-scraper.chart" -}}
+{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" -}}
+{{- end }}
