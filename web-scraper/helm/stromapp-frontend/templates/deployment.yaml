@@ -44,12 +44,15 @@ metadata:
 spec:
   selector:
     app: stromapp-frontend-app
+  type: {{ .Values.service.type }}
   ports:
     - protocol: TCP
-      port: 80
+      port: {{ .Values.service.port }}
       targetPort: 80
-      nodePort: 30080
-  type: NodePort
+      {{- if eq .Values.service.type "NodePort" }}
+      nodePort: {{ .Values.service.nodePort | default 30081 }}
+      {{- end }}
+ # type: NodePort
 ---
 {{- if .Values.autoscaling.enabled }}
 apiVersion: autoscaling/v2
