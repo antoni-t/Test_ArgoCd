@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: 'https://github.com/antoni-t/Test_ArgoCd.git'
     targetRevision: main
-    path: helm/web-scraper
+    path: web-scraper/helm/web-scraper
   destination:
     server: https://kubernetes.default.svc
     namespace: web-scraper
