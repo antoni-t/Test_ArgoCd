@@ -22,3 +22,7 @@ else
     echo "Installing stromapp-frontend..."
     helm install stromapp-frontend ./helm/stromapp-frontend
 fi
+
+echo "Applying ArgoCD Applications..."
+kubectl apply -f argo-web-scraper.yaml -n argocd
+kubectl apply -f argo-frontend.yaml -n argocd
